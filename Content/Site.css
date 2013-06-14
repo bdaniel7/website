@@ -1,0 +1,25 @@
+body { font-size: .85em; font-family: Calibri, Tahoma, Verdana, Sans-Serif; color: #232323; background-color: #fff;margin: 0}
+header, footer, nav, section { display: block; }
+p {margin: 1px;}
+
+/* basic forms */
+fieldset { border: 1px solid #ddd; padding: 0 1.4em 1.4em 1.4em; margin: 0 0 1.5em 0; }
+legend { font-size: 1.2em; font-weight: bold; }
+textarea { min-height: 75px; }
+.editor-label { margin: 1em 0 0 0; }
+.editor-field { margin: 0.5em 0 0 0; }
+
+/* validation helpers */
+.field-validation-error { color: #ff0000; }
+.field-validation-valid { display: none; }
+.input-validation-error { border: 1px solid #ff0000; background-color: #ffeeee; }
+.validation-summary-errors { font-weight: bold; color: #ff0000; }
+.validation-summary-valid { display: none; }
+
+/* my stuff */
+#welcome {margin: 5px;}
+#welcome h2 {margin: 15px 2px;}
+#content {padding: 5px 15px;}
+a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-right: 23px;}
+#footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%;}
+#version {color: #dcdcdc;text-align: center;}
