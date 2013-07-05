@@ -23,3 +23,5 @@ textarea { min-height: 75px; }
 a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-right: 23px;}
 #footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%;}
 #version {color: #dcdcdc;text-align: center;}
+
+#refer {font-weight: bold;}

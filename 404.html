@@ -29,7 +29,8 @@
 	</body>
 	<script type="text/javascript">
 	jQuery(document).ready( function(){
-		var ref = document.referrer;
+		var url = document.URL;
+		var ref = url.substr(url.lastIndexOf("/") + 1);
 		$("#refer").html(ref);
 	});
 	</script>
