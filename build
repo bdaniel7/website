@@ -1,0 +1,4 @@
+#!/bin/bash
+jekyll --pygments --safe
+# open "http://localhost/"
+# requires: gem install jekyll, easy_install Pygments

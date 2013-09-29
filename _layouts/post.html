@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+<div class="nav">
+    <a href="/">All posts</a>
+</div>
+
+<article id="post">
+    <div class="meta">
+        <div class="date">
+            <span class="day">{{ page.date | date: "%d" }}</span>
+            <span class="month">{{ page.date | date: "%b" }}</span>
+            <span class="year">{{ page.date | date: "%Y" }}</span>
+        </div>        
+    </div>
+    {{ content }}
+</article>

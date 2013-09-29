@@ -1,0 +1,6 @@
+markdown: rdiscount
+pygments: true
+name: dblendea.net
+description: Developer blog
+url: http://dblendea.net
+auto: true
