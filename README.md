@@ -1,6 +1,6 @@
 website
 =======
 
-website
+{{website}}
 
 dblendea.net online
