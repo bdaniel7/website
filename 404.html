@@ -4,14 +4,14 @@ title: 404 - Not found
 ---
 
 <div id="not-found">
-	<h3>404...</h3>
+	### 404...
 	<div class="alert alert-warning">
 		Page <span id="refer"></span> it's not here.
 	</div>
 </div>
 	
 <script type="text/javascript">
-$(document).ready( function(){
+$(document).ready( function($){
 	var url = document.URL;
 	var ref = url.substr(url.lastIndexOf("/") + 1);
 	$("#refer").html(ref);
