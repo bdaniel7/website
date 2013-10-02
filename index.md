@@ -1,14 +1,13 @@
 ---
 layout: default
-title: Daniel Blendea :: Online
+title: Homepage
 ---
 
 <div id="home">
 
-	# Soon...
-	<p>
-		Until then, you can see my <a href="/docs/Daniel-Blendea-cv-en.pdf" class="cv">cv</a>. Or my <a href="http://dblendea.wordpress.com">old blog</a>.
-	</p>
-
+# Soon...
+<p>
+	Until then, you can see my <a href="/docs/Daniel-Blendea-cv-en.pdf" class="cv">cv</a>. Or my <a href="http://dblendea.wordpress.com">old blog</a>.
+</p>
 
 </div>
