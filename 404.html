@@ -1,37 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta name="description" content="Daniel Blendea" />
-	<meta name="keywords" content="Daniel Blendea, .net, programming, development, web development, unit testing, c#, outsourcing, management, project management" />
-	<meta name="author" content="Daniel Blendea" />
-	<title>Daniel Blendea :: 404 :: Not found </title>
-	<link href="Content/html5reset-1.6.1.css" rel="stylesheet" type="text/css" />
-	<link href="Content/Site.css" rel="stylesheet" type="text/css" />
-	<script src="Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
-	<script src="Scripts/modernizr-2.0.6-development-only.js" type="text/javascript"></script>
-</head>
-	<body>
-		<div id="content">
-			<div id="welcome">
-				<h2>404...</h2>
-				<p>
-					Page <span id="refer"></span> it's not here.
+---
+layout: default
+title: 404 :: Not found
+---
 
-				</p>
-			</div>
-		</div>
-		<div id="footer">
-			<p id="version">
-				v1.0
-			</p>
-		</div>
-	</body>
-	<script type="text/javascript">
-	jQuery(document).ready( function(){
-		var url = document.URL;
-		var ref = url.substr(url.lastIndexOf("/") + 1);
-		$("#refer").html(ref);
-	});
-	</script>
-</html>
+<div id="not-found">
+	### 404...
+	<div class="alert alert-warning">
+		Page <span id="refer"></span> it's not here.
+	</div>
+</div>
+	
+<script type="text/javascript">
+jQuery(document).ready( function(){
+	var url = document.URL;
+	var ref = url.substr(url.lastIndexOf("/") + 1);
+	$("#refer").html(ref);
+});
+</script>
+
