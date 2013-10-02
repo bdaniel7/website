@@ -1,6 +1,6 @@
 markdown: rdiscount
-pygments: false
-name: Daniel Blendea :: Online
+pygments: true
+name: Daniel Blendea - Online
 description: Daniel Blendea, developer blog
 baseurl: /website
 url: http://dblendea.net
