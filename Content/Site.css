@@ -24,6 +24,6 @@ a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-r
 #footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%;}
 #version {color: #dcdcdc;text-align: center;}
 
-#main {margin: 50px}
+.main {margin: 50px}
 #refer {font-weight: bold;}
 p.par {margin: 5px 1px}
