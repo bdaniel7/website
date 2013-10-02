@@ -7,7 +7,7 @@ p {margin: 1px;}
 #welcome h2 {margin: 15px 2px;}
 #content {padding: 5px 15px;}
 a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-right: 23px;}
-#footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%;}
+#footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%; text-align: center;}
 #version {color: #dcdcdc;text-align: center;}
 
 .main {margin: 50px}
