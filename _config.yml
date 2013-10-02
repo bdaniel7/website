@@ -1,7 +1,7 @@
 markdown: rdiscount
 pygments: false
-name: dblendea.net
-description: Developer blog
+name: Daniel Blendea :: Online
+description: Daniel Blendea, developer blog
 baseurl: /website
 url: http://dblendea.net
 auto: true
