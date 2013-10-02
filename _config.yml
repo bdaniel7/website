@@ -1,5 +1,5 @@
 markdown: rdiscount
-pygments: true
+pygments: false
 name: dblendea.net
 description: Developer blog
 baseurl: /website
