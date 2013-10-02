@@ -25,3 +25,4 @@ a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-r
 #version {color: #dcdcdc;text-align: center;}
 
 #refer {font-weight: bold;}
+p.par {margin: 5px 1px}
