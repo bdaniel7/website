@@ -23,3 +23,11 @@
 		 
 	</nav>
 </header>
+<script type="text/javascript">
+$(document).ready( function($){
+	var url = document.URL;
+	var ref = url.substr(url.lastIndexOf("/") + 1);
+	$("nav .navbar-nav li.active").removeClass("active");
+	$("nav .navbar-nav li a[href*='" + ref + "']").parent("li").addClass("active");
+});
+</script>
