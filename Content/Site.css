@@ -7,6 +7,7 @@ p {margin: 1px;}
 a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-right: 23px;}
 #footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%; text-align: center;}
 #version {color: #dcdcdc;text-align: center;}
+#version a {color: #fff;}
 
 .main {margin: 50px}
 #refer {font-weight: bold;}
