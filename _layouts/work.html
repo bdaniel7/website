@@ -9,8 +9,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
-	<link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/Content/Site.css" type="text/css" />
+	<link rel="stylesheet/less" href="/Content/site.less" type="text/css" />
 
+	<script src="/Scripts/less-1.4.1.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,7 +29,7 @@
 	<div class="content">
 	  {{ content }}
 	</div>
-	<sidebar></sidebar>
+	<sidebar class="less-class"></sidebar>
 </div>
 
 {% include footer.html %}
