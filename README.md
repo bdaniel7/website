@@ -1,4 +1,4 @@
 dblendea.net
 =======
 
-The sourcecode of dblendea.net website.
+The sourcecode of <http://dblendea.net> website.
