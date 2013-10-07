@@ -1,5 +1,26 @@
 @color: #4D926F;
-@bg-color: @color + #003300;
-@border: @color + #000033;
+@bg-color: @color - #003300;
+@border: @color - #000033;
 
 .less-class { color: @color; background-color: @bg-color; border: @border 1px dashed; }
+
+p {margin: 1px;}
+
+#welcome {
+	margin: 5px;
+	h2 {margin: 15px 2px;}
+}
+
+#content {padding: 5px 15px;}
+a.cv {background: url('../images/pdf-file.png') no-repeat center right;padding-right: 23px;}
+#footer {margin: 0 auto; position:absolute; bottom: 0px;width: 100%; text-align: center;}
+sidebar {display: block;}
+
+#version {
+	color: #dcdcdc;text-align: center;
+	a {color: #fff;}
+}
+
+.main {margin: 50px}
+#refer {font-weight: bold;}
+p.par {margin: 5px 1px}
