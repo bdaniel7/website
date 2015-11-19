@@ -2,9 +2,9 @@
   "name": "website",
   "version": "1.1.5",
   "description": "Website for Daniel Blendea using Express 4",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.html"
   },
   "dependencies": {
   },
