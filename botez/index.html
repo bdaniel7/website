@@ -22,10 +22,13 @@
 	<div id="app" class="container-fluid">
 	  <h3 class="text-center">Botezul lui Victor Mathias Blendea</h3>
 		
-		<h5>15 octombrie 2017</h5>
+		<h5 class="text-center">15 octombrie 2017</h5>
 		
-		 <ul class="nav nav-tabs" role="tablist">
+		 <ul class="nav nav-tabs" role="tablist" id="main-menu">
 			<li role="presentation" class="active">
+				<a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
+			</li>
+			<li role="presentation">
 				<a href="#biserica" aria-controls="biserica" role="tab" data-toggle="tab">Biserica</a>
 			</li>
 			<li role="presentation">
@@ -34,13 +37,21 @@
 			<li role="presentation">
 				<a href="#traseu" aria-controls="traseu" role="tab" data-toggle="tab">Traseu</a>
 			</li>
-			<!-- <li role="presentation"> -->
-				<!-- <a href="#meniu" aria-controls="meniu" role="tab" data-toggle="tab">Meniu</a> -->
-			<!-- </li> -->
+			<li role="presentation" class="disabled">
+				<a href="#meniu" aria-controls="meniu" role="tab" data-toggle="tab">Meniu</a>
+			</li>
 		  </ul>
 		
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane fade in active" id="biserica">
+			<div role="tabpanel" class="tab-pane fade in active" id="home">
+			<p>Eu, <strong>Victor Mathias Blendea</strong> Întâiul, cu mare bucurie vă invit la botezul meu, ce va avea loc pe 
+			<mark>15 octombrie 2017</mark>, începând cu ora 13:00.
+			</p>
+			<p>Nași vor fi Elena și Răzvan Dumitrescu.</p>
+			<p>Sponsori vor fi Codruța și Daniel Blendea <img src="wink.png"><img src="wink.png">
+			</p>
+			</div>
+			<div role="tabpanel" class="tab-pane fade in" id="biserica">
 				<figure>
 					<figcaption class="figure-caption">
 					<div class="alert alert-info" role="alert">
@@ -69,14 +80,15 @@
 					<img class="img-fluid rounded" src="traseu.jpg" />
 				</figure>
 			</div>
-			<!-- <div role="tabpanel" class="tab-pane fade disabled" id="meniu">inca nu</div> -->
+			<div role="tabpanel" class="tab-pane fade disabled" id="meniu">inca nu</div>
 		</div>
 		
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous">
+	crossorigin="anonymous"></script>
+	<script src="index.js"></script>
 	</script>
 </body>
 </html>
