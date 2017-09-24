@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Victor Mathias Blendea - Botez</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10">
 	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
 	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
 	<link type="text/css" rel="stylesheet" href="style.css"/>
 
-	<script src="https://unpkg.com/vue"></script>
-
-	<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-	<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+	
 </head>
 <body>
 	<div id="app" class="container-fluid">
@@ -18,30 +24,59 @@
 		
 		<h5>15 octombrie 2017</h5>
 		
-		<figure>
-			<figcaption class="figure-caption">
-			<div class="alert alert-info" role="alert">
-				<strong>Biserica</strong>: Delea Nouă Calist, Matei Basarab 1: ora 13:00
+		 <ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#biserica" aria-controls="biserica" role="tab" data-toggle="tab">Biserica</a>
+			</li>
+			<li role="presentation">
+				<a href="#restaurant" aria-controls="restaurant" role="tab" data-toggle="tab">Restaurant</a>
+				</li>
+			<li role="presentation">
+				<a href="#traseu" aria-controls="traseu" role="tab" data-toggle="tab">Traseu</a>
+			</li>
+			<!-- <li role="presentation"> -->
+				<!-- <a href="#meniu" aria-controls="meniu" role="tab" data-toggle="tab">Meniu</a> -->
+			<!-- </li> -->
+		  </ul>
+		
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in active" id="biserica">
+				<figure>
+					<figcaption class="figure-caption">
+					<div class="alert alert-info" role="alert">
+						<strong>Biserica</strong>: Delea Nouă Calist, Matei Basarab 1: ora 13:00
+					</div>
+					</figcaption>
+					<img class="img-fluid rounded" src="biserica.jpg" />
+				</figure>
 			</div>
-			</figcaption>
-			<img class="img-fluid rounded" src="biserica.jpg" />
-		</figure>
-		<figure>
-			<figcaption class="figure-caption">
-				<div class="alert alert-info" role="alert">
-				<strong>Restaurantul</strong>: Hotel Mercure, George Enescu 15-17: ora 15:00				
-				</div>
-			</figcaption>
-			<img class="img-fluid rounded" src="hotel.jpg" />
-		</figure>
-		<figure>
-			<figcaption class="figure-caption">
-			<div class="alert alert-info" role="alert">
-			<strong>Traseul:</strong></div>
-			</figcaption>
-			<img class="img-fluid rounded" src="traseu.jpg" />
-		</figure>
+			<div role="tabpanel" class="tab-pane fade" id="restaurant">
+					<figure>
+					<figcaption class="figure-caption">
+						<div class="alert alert-info" role="alert">
+						<strong>Restaurantul</strong>: Hotel Mercure, George Enescu 15-17: ora 15:00				
+						</div>
+					</figcaption>
+					<img class="img-fluid rounded" src="hotel.jpg" />
+				</figure>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="traseu">
+				<figure>
+					<figcaption class="figure-caption">
+					<div class="alert alert-info" role="alert">
+					<strong>Traseul:</strong></div>
+					</figcaption>
+					<img class="img-fluid rounded" src="traseu.jpg" />
+				</figure>
+			</div>
+			<!-- <div role="tabpanel" class="tab-pane fade disabled" id="meniu">inca nu</div> -->
+		</div>
+		
 	</div>
-  <script type="module" src="app.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous">
+	</script>
 </body>
 </html>
