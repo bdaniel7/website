@@ -8,5 +8,5 @@ Vue.use(BootstrapVue);
 
 
 new Vue({
-  el: '#app'
+  el: '#app',
 });

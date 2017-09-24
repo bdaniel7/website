@@ -2,8 +2,10 @@
 <html>
 <head>
 	<title>Victor Mathias Blendea - Botez</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10">
 	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
 	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+	<link type="text/css" rel="stylesheet" href="style.css"/>
 
 	<script src="https://unpkg.com/vue"></script>
 
@@ -11,15 +13,34 @@
 	<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 </head>
 <body>
-  <div id="app">
-  <h2>Botez</h2>
-
-	<div>15 octombrie 2017</div>
-
-	<div>orele 13-14 Biserica Delea Nouă Calist, Matei Basarab 1.</div>
-	<img src="biserica.jpg" />
-	<div>orele 15-19 Restaurant Hotel Mercure, George Enescu 15-17</div>
-	<img src="hotel.jpg" />
+	<div id="app" class="container-fluid">
+	  <h3 class="text-center">Botezul lui Victor Mathias Blendea</h3>
+		
+		<h5>15 octombrie 2017</h5>
+		
+		<figure>
+			<figcaption class="figure-caption">
+			<div class="alert alert-info" role="alert">
+				<strong>Biserica</strong>: Delea Nouă Calist, Matei Basarab 1: ora 13:00
+			</div>
+			</figcaption>
+			<img class="img-fluid rounded" src="biserica.jpg" />
+		</figure>
+		<figure>
+			<figcaption class="figure-caption">
+				<div class="alert alert-info" role="alert">
+				<strong>Restaurantul</strong>: Hotel Mercure, George Enescu 15-17: ora 15:00				
+				</div>
+			</figcaption>
+			<img class="img-fluid rounded" src="hotel.jpg" />
+		</figure>
+		<figure>
+			<figcaption class="figure-caption">
+			<div class="alert alert-info" role="alert">
+			<strong>Traseul:</strong></div>
+			</figcaption>
+			<img class="img-fluid rounded" src="traseu.jpg" />
+		</figure>
 	</div>
   <script type="module" src="app.js"></script>
 </body>
