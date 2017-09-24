@@ -1,3 +1,5 @@
 h3 {margin:10px 5px}
 .alert {padding: 3px !important;
 		margin-bottom: 2px !important}
+		
+.nav > li > a  {padding: 4px 7px !important;}
