@@ -1,4 +1,4 @@
-$('#main-menu a[href="#meniu"').click(function (e) {
-  e.preventDefault();
-  return false;
-})
+// $('#main-menu a[href="#meniu"').click(function (e) {
+  // e.preventDefault();
+  // return false;
+// })
