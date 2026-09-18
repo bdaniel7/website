@@ -6,10 +6,9 @@ title: Mate
 {{ with .Site.GetPage "section" "mate" }}
   <h2>Contents of {{ .Title }}</h2>
   <ul>
-    {{ range .Pages }}
+    {{ range where .Pages "IsSection" true }}
       <li>
         <a href="{{ .Permalink }}">{{ .Title }}</a>
-        {{ if .IsSection }} (Folder) {{ else }} (Page) {{ end }}
       </li>
     {{ end }}
   </ul>
