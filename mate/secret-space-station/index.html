@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>Escape from the Secret Space Station</title>
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <main id="app">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">MISSION CONTROL</div>
+        <h1>Escape from the Secret Space Station</h1>
+      </div>
+      <div class="timer-wrap">
+        <span class="timer-label">TIME REMAINING</span>
+        <span id="timer" class="timer" aria-live="polite">40:00</span>
+      </div>
+    </header>
+
+    <section id="progress" class="progress" aria-label="Mission progress"></section>
+    <section id="game-screen" class="screen" aria-live="polite"></section>
+  </main>
+
+  <script src="js/game.js"></script>
+</body>
+</html>

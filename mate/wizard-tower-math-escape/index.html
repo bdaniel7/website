@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Escape the Wizard's Tower — A Math Adventure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6EFDD;
+    --bg-2:#ECDFBC;
+    --ink:#3A2B1A;
+    --ink-soft:#6B5A42;
+    --card:#FFFBF2;
+    --card-line:rgba(58,43,26,0.14);
+    --gold:#B9822C;
+    --gold-glow:#E8B84B;
+    --ember:#BD4227;
+    --sage:#3F8F5C;
+    --lilac:#7A5FC0;
+    --star:rgba(58,43,26,0.35);
+    --ring-track:rgba(58,43,26,0.12);
+    --shadow:0 18px 40px -18px rgba(58,43,26,0.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#140C2C;
+      --bg-2:#1E1445;
+      --ink:#F4ECDA;
+      --ink-soft:#C9BBA3;
+      --card:#231A49;
+      --card-line:rgba(244,236,218,0.14);
+      --gold:#EFC15A;
+      --gold-glow:#FFDD8A;
+      --ember:#FF8264;
+      --sage:#6FD69A;
+      --lilac:#B49CFF;
+      --star:rgba(244,236,218,0.55);
+      --ring-track:rgba(244,236,218,0.14);
+      --shadow:0 18px 44px -16px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#140C2C;
+    --bg-2:#1E1445;
+    --ink:#F4ECDA;
+    --ink-soft:#C9BBA3;
+    --card:#231A49;
+    --card-line:rgba(244,236,218,0.14);
+    --gold:#EFC15A;
+    --gold-glow:#FFDD8A;
+    --ember:#FF8264;
+    --sage:#6FD69A;
+    --lilac:#B49CFF;
+    --star:rgba(244,236,218,0.55);
+    --ring-track:rgba(244,236,218,0.14);
+    --shadow:0 18px 44px -16px rgba(0,0,0,0.55);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 8%, rgba(184,130,44,0.10), transparent 45%),
+      radial-gradient(circle at 85% 92%, rgba(122,95,192,0.10), transparent 40%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Nunito','Segoe UI',sans-serif;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2','Trebuchet MS',sans-serif;
+    font-weight:700;
+    margin:0;
+  }
+  #stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  #stars i{
+    position:absolute;
+    display:block;
+    width:2px;height:2px;
+    border-radius:50%;
+    background:var(--star);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    #stars{ animation:twinkle 6s ease-in-out infinite alternate; }
+  }
+  @keyframes twinkle{ from{opacity:0.55;} to{opacity:1;} }
+
+  #app{
+    position:relative;
+    z-index:1;
+    max-width:920px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+  }
+
+  /* ---------- header ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand svg{ width:40px; height:40px; flex:none; }
+  .brand .titles h1{ font-size:1.35rem; line-height:1.1; }
+  .brand .titles p{ margin:2px 0 0; color:var(--ink-soft); font-size:0.85rem; }
+  .clock{
+    font-family:'Baloo 2',sans-serif;
+    font-size:0.95rem;
+    background:var(--card);
+    border:1px solid var(--card-line);
+    padding:8px 14px;
+    border-radius:999px;
+    box-shadow:var(--shadow);
+    white-space:nowrap;
+  }
+  .clock b{ color:var(--gold); }
+
+  /* ---------- trail ---------- */
+  .trail{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin-bottom:26px;
+    overflow-x:auto;
+    padding:6px 2px;
+  }
+  .trail .node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:none;
+    width:56px;
+    opacity:0.45;
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .trail .node.current{ opacity:1; transform:translateY(-2px); }
+  .trail .node.done{ opacity:0.9; }
+  .trail .node .dot{
+    width:40px;height:40px;
+    border-radius:50%;
+    background:var(--card);
+    border:2px solid var(--card-line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+  }
+  .trail .node.reachable{ cursor:pointer; }
+  .trail .node.reachable:hover{ opacity:0.75; }
+  .trail .node.current .dot{ border-color:var(--gold-glow); }
+  .trail .node.done .dot{ border-color:var(--sage); background:var(--sage); }
+  .trail .node.done .dot svg *{ fill:#fff !important; stroke:#fff !important; }
+  .trail .node svg{ width:20px;height:20px; }
+  .trail .link{
+    flex:1;
+    height:2px;
+    min-width:14px;
+    background:var(--card-line);
+    margin-top:-16px;
+  }
+
+  /* ---------- cards ---------- */
+  .panel{
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:28px;
+  }
+  .center-panel{ text-align:center; padding:40px 28px; }
+  .center-panel svg{ width:150px;height:150px;margin:0 auto 14px; }
+  .center-panel h2{ font-size:1.6rem; margin-bottom:10px; }
+  .center-panel p{ color:var(--ink-soft); line-height:1.55; max-width:520px; margin:0 auto 20px; }
+  .notice{
+    background:var(--bg-2);
+    border:1px solid var(--ember);
+    color:var(--ink);
+    border-radius:12px;
+    padding:10px 16px;
+    font-size:0.85rem;
+    line-height:1.5;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .notice button{
+    background:none;border:1px solid var(--card-line);color:var(--ink);
+    border-radius:8px;padding:5px 12px;font-size:0.78rem;cursor:pointer;
+    flex:none;
+  }
+  .team-input{
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:20px;
+  }
+  .team-input input{
+    font-family:'Nunito',sans-serif;
+    font-size:1rem;
+    padding:11px 16px;
+    border-radius:12px;
+    border:1px solid var(--card-line);
+    background:var(--bg);
+    color:var(--ink);
+    width:240px;
+    max-width:70vw;
+  }
+  .btn{
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.05rem;
+    border:none;
+    cursor:pointer;
+    padding:13px 28px;
+    border-radius:14px;
+    background:var(--gold);
+    color:#2A1E08;
+    box-shadow:0 10px 24px -10px rgba(185,130,44,0.6);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--lilac);
+    outline-offset:2px;
+  }
+  .btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--card-line);
+    box-shadow:none;
+  }
+  .btn.small{ font-size:0.9rem; padding:9px 18px; }
+
+  /* ---------- room layout ---------- */
+  .room-card{
+    display:grid;
+    grid-template-columns:210px 1fr;
+    gap:26px;
+  }
+  @media (max-width:680px){
+    .room-card{ grid-template-columns:1fr; }
+  }
+  .illus{
+    background:var(--bg-2);
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .illus svg{ width:100%; max-width:170px; height:auto; }
+  .room-title{ font-size:1.3rem; margin-bottom:6px; }
+  .room-meta{ color:var(--ink-soft); font-size:0.85rem; margin-bottom:14px; }
+  .story{ line-height:1.6; margin-bottom:14px; }
+  .problem{
+    background:var(--bg-2);
+    border-left:4px solid var(--gold);
+    border-radius:12px;
+    padding:14px 16px;
+    line-height:1.55;
+    margin-bottom:16px;
+  }
+  .timer-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .ring-wrap{ position:relative; width:52px; height:52px; flex:none; }
+  .ring-wrap svg{ width:52px; height:52px; transform:rotate(-90deg); }
+  .ring-wrap circle{ fill:none; stroke-width:6; }
+  .ring-track{ stroke:var(--ring-track); }
+  .ring-bar{ stroke:var(--gold); stroke-linecap:round; transition:stroke-dashoffset 1s linear, stroke .3s ease; }
+  .ring-bar.over{ stroke:var(--ember); }
+  .timer-text{ font-family:'Baloo 2',sans-serif; font-size:0.95rem; }
+  .timer-text .label{ display:block; font-family:'Nunito',sans-serif; font-size:0.78rem; color:var(--ink-soft); }
+  .timer-text.over{ color:var(--ember); }
+
+  .answer-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  .lock-input{
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.4rem;
+    letter-spacing:3px;
+    text-align:center;
+    width:150px;
+    padding:12px 10px;
+    border-radius:14px;
+    border:2px solid var(--card-line);
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .lock-input:focus{ border-color:var(--gold-glow); }
+  .shake{ animation:shake .4s ease; }
+  @keyframes shake{
+    10%,90%{ transform:translateX(-2px); }
+    20%,80%{ transform:translateX(4px); }
+    30%,50%,70%{ transform:translateX(-8px); }
+    40%,60%{ transform:translateX(8px); }
+  }
+  .feedback{ min-height:1.4em; font-weight:700; margin:4px 0 10px; }
+  .feedback.wrong{ color:var(--ember); }
+  .feedback.right{ color:var(--sage); }
+
+  .hint-toggle{
+    background:none;
+    border:1px dashed var(--card-line);
+    color:var(--ink-soft);
+    border-radius:10px;
+    padding:8px 14px;
+    font-family:'Nunito',sans-serif;
+    font-size:0.88rem;
+    cursor:pointer;
+  }
+  .hint-toggle.pulse{ animation:pulse 1.4s ease-in-out infinite; border-color:var(--gold-glow); color:var(--ink); }
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(232,184,75,0.35);} 50%{ box-shadow:0 0 0 8px rgba(232,184,75,0);} }
+  }
+  .hint-text{
+    margin-top:10px;
+    padding:10px 14px;
+    background:var(--bg-2);
+    border-radius:10px;
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    display:none;
+  }
+  .hint-text.show{ display:block; }
+
+  .success-box{
+    margin-top:16px;
+    padding:16px 18px;
+    border-radius:14px;
+    background:var(--bg-2);
+    border:1px solid var(--sage);
+    display:none;
+  }
+  .success-box.show{ display:block; }
+  .success-box p{ margin:0 0 12px; line-height:1.55; }
+  .success-box .label{ color:var(--sage); font-weight:700; margin-bottom:6px; display:block; }
+
+  .foot-links{ text-align:center; margin-top:22px; }
+  .foot-links button:not(.btn){
+    background:none;border:none;color:var(--ink-soft);
+    font-family:'Nunito',sans-serif;font-size:0.82rem;
+    text-decoration:underline;cursor:pointer;
+  }
+  .confirm-row{
+    font-size:0.85rem; color:var(--ink-soft);
+    display:inline-flex; align-items:center; gap:8px;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .confirm-row .btn.small{ text-decoration:none; }
+
+  .nav-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .nav-row.bottom{ margin-top:16px; margin-bottom:0; }
+
+  /* ---------- finish ---------- */
+  .stat-row{
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:18px 0 24px;
+  }
+  .stat{
+    background:var(--bg-2); border-radius:14px; padding:12px 20px; min-width:110px;
+  }
+  .stat b{ display:block; font-family:'Baloo 2',sans-serif; font-size:1.3rem; color:var(--gold); }
+  .stat span{ font-size:0.78rem; color:var(--ink-soft); }
+  .recap{
+    text-align:left;
+    max-width:560px;
+    margin:0 auto;
+    background:var(--bg-2);
+    border-radius:14px;
+    padding:6px 18px;
+  }
+  .recap details{ padding:10px 0; border-bottom:1px solid var(--card-line); }
+  .recap details:last-child{ border-bottom:none; }
+  .recap summary{ cursor:pointer; font-weight:700; }
+  .recap p{ color:var(--ink-soft); margin:8px 0 4px; line-height:1.5; }
+
+  /* ---------- illustration icon palette ---------- */
+  .ic-gold{ fill:var(--gold-glow); }
+  .ic-gold-solid{ fill:var(--gold); }
+  .ic-structure{ fill:var(--gold-glow); }
+  .ic-structure-soft{ fill:var(--ink-soft); opacity:0.5; }
+  .ic-card{ fill:var(--card); stroke:var(--gold-glow); stroke-width:2; stroke-opacity:0.65; }
+  .ic-ember{ fill:var(--ember); }
+  .ic-sage{ fill:var(--sage); }
+  .ic-lilac{ fill:var(--lilac); }
+  .ic-glow{ fill:var(--gold-glow); }
+  .ic-line{ fill:none; stroke:var(--ink-soft); stroke-width:3; stroke-linecap:round; opacity:0.7; }
+  .ic-ember-line{ fill:none; stroke:var(--ember); stroke-width:8; stroke-linecap:round; }
+  .ic-gold-line{ fill:none; stroke:var(--gold-glow); stroke-width:6; stroke-linecap:round; }
+  .ic-glow-thin{ fill:none; stroke:var(--gold-glow); stroke-width:2; opacity:0.5; }
+  .ic-glowline{ fill:var(--card); opacity:0.4; }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div id="app"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ SVG ICON SET (also reused, scaled, as trail markers) ============ */
+  var ICONS = {
+    tower:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<circle cx="150" cy="30" r="3" class="ic-gold"/><circle cx="40" cy="24" r="2.2" class="ic-gold"/><circle cx="170" cy="60" r="2" class="ic-gold"/>'+
+        '<path d="M70 30 L100 6 L130 30 L130 190 L70 190 Z" class="ic-structure"/>'+
+        '<rect x="82" y="46" width="12" height="16" rx="2" class="ic-gold"/>'+
+        '<rect x="106" y="46" width="12" height="16" rx="2" class="ic-gold"/>'+
+        '<rect x="82" y="78" width="12" height="16" rx="2" class="ic-gold"/>'+
+        '<rect x="106" y="78" width="12" height="16" rx="2" class="ic-gold"/>'+
+        '<path d="M84 190 L84 150 Q100 132 116 150 L116 190 Z" class="ic-ember"/>'+
+        '<path d="M92 190 L92 156 Q100 146 108 156 L108 190 Z" class="ic-glow"/>'+
+      '</svg>',
+    gate:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<circle cx="34" cy="24" r="2.4" class="ic-gold"/><circle cx="166" cy="20" r="2" class="ic-gold"/><circle cx="150" cy="42" r="1.6" class="ic-gold"/>'+
+        '<path d="M28 190 L28 70 L54 40 L54 190 Z" class="ic-structure-soft"/>'+
+        '<path d="M172 190 L172 70 L146 40 L146 190 Z" class="ic-structure-soft"/>'+
+        '<path d="M54 190 L54 90 Q100 50 146 90 L146 190 Z" class="ic-structure"/>'+
+        '<path d="M64 190 L64 96 Q100 64 136 96 L136 190 Z" class="ic-ember"/>'+
+        '<path d="M92 150 L100 136 L108 150 L104 150 L104 170 L96 170 L96 150 Z" class="ic-glow"/>'+
+      '</svg>',
+    potion:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<rect x="24" y="150" width="152" height="10" rx="4" class="ic-structure-soft"/>'+
+        '<path d="M64 60 L64 90 L44 140 Q40 154 56 154 L94 154 Q110 154 106 140 L86 90 L86 60 Z" class="ic-card"/>'+
+        '<rect x="60" y="48" width="30" height="14" rx="4" class="ic-ember"/>'+
+        '<path d="M50 132 L100 132 L94 144 Q90 150 80 150 L64 150 Q56 150 52 144 Z" class="ic-sage"/>'+
+        '<circle cx="66" cy="116" r="3.5" class="ic-glow"/><circle cx="80" cy="122" r="2.4" class="ic-glow"/>'+
+        '<path d="M126 78 L126 100 L112 138 Q109 150 122 150 L150 150 Q163 150 160 138 L146 100 L146 78 Z" class="ic-card"/>'+
+        '<rect x="123" y="68" width="26" height="12" rx="4" class="ic-lilac"/>'+
+        '<path d="M116 128 L156 128 L151 140 Q147 146 138 146 L134 146 Q125 146 121 140 Z" class="ic-gold"/>'+
+      '</svg>',
+    library:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<rect x="30" y="150" width="30" height="34" class="ic-ember"/>'+
+        '<rect x="62" y="146" width="30" height="38" class="ic-sage"/>'+
+        '<rect x="94" y="152" width="30" height="32" class="ic-gold"/>'+
+        '<path d="M40 96 Q70 78 100 96 L100 138 Q70 122 40 138 Z" class="ic-card"/>'+
+        '<path d="M100 96 Q130 78 160 96 L160 138 Q130 122 100 138 Z" class="ic-card"/>'+
+        '<path d="M46 100 Q72 86 96 100" class="ic-line"/>'+
+        '<path d="M104 100 Q130 86 154 100" class="ic-line"/>'+
+        '<path d="M100 54 L106 70 L122 72 L110 82 L114 98 L100 89 L86 98 L90 82 L78 72 L94 70 Z" class="ic-glow"/>'+
+      '</svg>',
+    treasury:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<rect x="30" y="160" width="140" height="8" rx="4" class="ic-structure-soft"/>'+
+        '<circle cx="66" cy="96" r="26" class="ic-lilac"/>'+
+        '<circle cx="134" cy="96" r="26" class="ic-sage"/>'+
+        '<circle cx="100" cy="130" r="26" class="ic-gold"/>'+
+        '<path d="M50 96 L66 84 L82 96 L66 108 Z" class="ic-glowline"/>'+
+        '<path d="M118 96 L134 84 L150 96 L134 108 Z" class="ic-glowline"/>'+
+        '<path d="M84 130 L100 118 L116 130 L100 142 Z" class="ic-glowline"/>'+
+        '<path d="M100 52 L104 62 L114 64 L106 71 L108 82 L100 76 L92 82 L94 71 L86 64 L96 62 Z" class="ic-glow"/>'+
+      '</svg>',
+    observatory:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<path d="M100 20 A70 70 0 0 1 170 90 L30 90 A70 70 0 0 1 100 20 Z" class="ic-card"/>'+
+        '<circle cx="60" cy="46" r="2" class="ic-gold"/><circle cx="140" cy="40" r="1.6" class="ic-gold"/><circle cx="100" cy="26" r="1.8" class="ic-gold"/>'+
+        '<path d="M118 60 Q140 44 158 30" stroke-width="10" class="ic-ember-line"/>'+
+        '<circle cx="158" cy="30" r="8" class="ic-ember"/>'+
+        '<rect x="70" y="92" width="60" height="14" class="ic-card"/>'+
+        '<path d="M60 106 L140 106 L150 190 L50 190 Z" class="ic-card"/>'+
+        '<path d="M70 190 L76 130 L124 130 L130 190 Z" class="ic-structure-soft"/>'+
+        '<path d="M44 60 A20 20 0 1 1 44 60.1" class="ic-glow-thin"/>'+
+      '</svg>',
+    vault:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<path d="M60 40 Q40 30 30 44 Q46 38 56 48 Q40 46 34 60 Q50 52 60 60 Q66 70 60 82" class="ic-sage"/>'+
+        '<circle cx="52" cy="56" r="3.2" class="ic-glow"/>'+
+        '<circle cx="100" cy="112" r="72" class="ic-card"/>'+
+        '<circle cx="100" cy="112" r="56" class="ic-card"/>'+
+        '<circle cx="100" cy="112" r="20" class="ic-gold"/>'+
+        '<rect x="94" y="56" width="12" height="112" class="ic-gold-line"/>'+
+        '<rect x="44" y="106" width="112" height="12" class="ic-gold-line"/>'+
+        '<circle cx="100" cy="56" r="4" class="ic-ember"/><circle cx="100" cy="168" r="4" class="ic-ember"/>'+
+        '<circle cx="44" cy="112" r="4" class="ic-ember"/><circle cx="156" cy="112" r="4" class="ic-ember"/>'+
+      '</svg>',
+    chest:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<circle cx="40" cy="30" r="2.4" class="ic-gold"/><circle cx="160" cy="26" r="2" class="ic-gold"/><circle cx="150" cy="52" r="1.6" class="ic-lilac"/><circle cx="50" cy="54" r="1.6" class="ic-sage"/>'+
+        '<path d="M36 100 Q100 60 164 100 L156 108 Q100 78 44 108 Z" class="ic-ember"/>'+
+        '<rect x="34" y="108" width="132" height="68" rx="8" class="ic-card"/>'+
+        '<rect x="34" y="108" width="132" height="16" rx="6" class="ic-gold"/>'+
+        '<rect x="90" y="118" width="20" height="24" rx="4" class="ic-lilac"/>'+
+        '<circle cx="70" cy="86" r="6" class="ic-gold-solid"/><circle cx="100" cy="70" r="7" class="ic-ember"/><circle cx="130" cy="88" r="5" class="ic-sage"/>'+
+        '<path d="M100 40 L104 50 L114 52 L106 59 L108 70 L100 64 L92 70 L94 59 L86 52 L96 50 Z" class="ic-glow"/>'+
+      '</svg>',
+    door:
+      '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+
+        '<circle cx="42" cy="28" r="2.2" class="ic-gold"/><circle cx="160" cy="34" r="1.8" class="ic-gold"/><circle cx="150" cy="60" r="1.5" class="ic-lilac"/>'+
+        '<path d="M56 190 L56 86 Q100 46 144 86 L144 190 Z" class="ic-structure"/>'+
+        '<path d="M68 190 L68 92 Q100 62 132 92 L132 190 Z" class="ic-ember"/>'+
+        '<circle cx="100" cy="140" r="9" class="ic-glow"/>'+
+        '<rect x="96" y="140" width="8" height="22" rx="3" class="ic-glow"/>'+
+      '</svg>'
+  };
+
+  /* ============ DEFAULT ROOM DATA (used if no sheet is configured, or it fails to load) ============ */
+  var DEFAULT_ROOMS = [
+    {
+      key:'gate', name:"The Gatekeeper's Gate", skill:"Multiplication & division",
+      story:"You step up to the towering iron gate of the Wizard's Tower. An old gatekeeper blocks the way, guarding a chest of coins. &ldquo;Prove your number magic,&rdquo; he grumbles, &ldquo;and I shall let you pass.&rdquo;",
+      problem:"The chest holds 7 boxes. Each box contains 48 golden coins. The gatekeeper wants to share <b>all</b> the coins equally among 8 apprentices standing behind you. How many coins will each apprentice receive?",
+      answer:42, timeLimit:240,
+      hint:"First multiply to find the total number of coins (boxes &times; coins per box). Then divide that total by the number of apprentices.",
+      solution:"7 &times; 48 = 336 coins in total. Shared among 8 apprentices: 336 &divide; 8 = <b>42</b> coins each."
+    },
+    {
+      key:'potion', name:"The Potion Chamber", skill:"Fractions of a number",
+      story:"Inside, shelves of bubbling potions line the walls. A tiny fairy flutters over an open spellbook and points to a page about ratios of ingredients.",
+      problem:"The spellbook has 60 pages in total. Exactly 2/5 of the pages are potion recipes &mdash; the rest are about spells. How many pages are potion recipes?",
+      answer:24, timeLimit:240,
+      hint:"To find a fraction of a number, multiply the number by the top of the fraction, then divide by the bottom: 60 &times; 2 &divide; 5.",
+      solution:"2/5 of 60 = 60 &times; 2 &divide; 5 = <b>24</b> pages."
+    },
+    {
+      key:'library', name:"The Whispering Library", skill:"Order of operations",
+      story:"Beyond the potion chamber, a spiral staircase climbs into a library so tall its ceiling disappears into shadow. Glowing runes are carved into the final step.",
+      problem:"The runes spell out an equation: <b>6 + 4 &times; (9 &minus; 3) &divide; 2 = ?</b> Solve it correctly to make the staircase glow.",
+      answer:18, timeLimit:300,
+      hint:"Remember the order of operations: brackets first, then multiplication and division (left to right), then addition and subtraction.",
+      solution:"Brackets first: 9 &minus; 3 = 6. Then multiply: 4 &times; 6 = 24. Then divide: 24 &divide; 2 = 12. Finally add: 6 + 12 = <b>18</b>."
+    },
+    {
+      key:'treasury', name:"The Golden Treasury", skill:"Decimal multiplication",
+      story:"The library door swings open onto a treasury piled high with crystal orbs, each one humming faintly with stored magic.",
+      problem:"Four identical crystal orbs sit on the counting table. Each orb weighs 3.25 kg. What is the total weight of all four orbs, in kilograms?",
+      answer:13, timeLimit:240,
+      hint:"Multiply the weight of one orb by the number of orbs: 3.25 &times; 4.",
+      solution:"3.25 &times; 4 = <b>13</b> kg."
+    },
+    {
+      key:'observatory', name:"The Star Observatory", skill:"Percentages",
+      story:"A spiral of stairs leads up to a circular observatory. Through the great telescope, hundreds of stars twinkle across a painted ceiling.",
+      problem:"The astronomer has mapped 200 stars on the observatory ceiling. 35% of them are golden stars. How many golden stars are there?",
+      answer:70, timeLimit:240,
+      hint:"To find a percentage of a number, multiply the number by the percent, then divide by 100: 200 &times; 35 &divide; 100.",
+      solution:"35% of 200 = 200 &times; 35 &divide; 100 = <b>70</b> golden stars."
+    },
+    {
+      key:'vault', name:"The Dragon's Vault", skill:"Area & division \u2014 final chamber",
+      story:"At the top of the tower, a great stone door guards the dragon&rsquo;s hoard. Faint golden light glows from the seams between four heavy locking gears.",
+      problem:"The vault door is a rectangle, 12 metres wide and 9 metres tall. To turn the four gears evenly, find the <b>area</b> of the door and then divide it by 4. What number unlocks the final gear?",
+      answer:27, timeLimit:300,
+      hint:"First find the area of the rectangle (width &times; height), then divide the result by 4.",
+      solution:"Area = 12 &times; 9 = 108 square metres. 108 &divide; 4 = <b>27</b>."
+    }
+  ];
+
+  /* ============ LOAD ROOMS FROM A PUBLISHED GOOGLE SHEET ============
+     To use your own content:
+     1. In Google Sheets, make one row per chamber with these exact
+        column headers (any order): key, name, skill, story, problem,
+        answer, timeLimit, hint, solution.
+     2. File > Share > Publish to web > choose the sheet/tab > CSV > Publish.
+        (This is different from the normal "Share" link-sharing dialog —
+        it must be the "Publish to web" option to get a URL that fetch()
+        can read without logging in.)
+     3. Paste that URL below. Leave it as "" to just use the built-in
+        adventure.
+     "key" picks the illustration for that chamber. Recognised values:
+     gate, potion, library, treasury, observatory, vault, tower, chest.
+     Any other value (or a blank cell) gets a generic door illustration,
+     so you can add extra chambers freely. "answer" and "timeLimit" (in
+     seconds) must be numbers; every other column is free text.
+  ============================================================== */
+  var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTl41VXZun8lo3NNY932yA4vuo0Z7ydXtLurgXLBMMDhEaqGr1fLNax40V0J8deUD7BbxvFoFPs9omX/pub?gid=679210735&single=true&output=csv";
+	//"https://docs.google.com/spreadsheets/d/e/2PACX-1vTl41VXZun8lo3NNY932yA4vuo0Z7ydXtLurgXLBMMDhEaqGr1fLNax40V0J8deUD7BbxvFoFPs9omX/pub?gid=0&single=true&output=csv";
+  var usingFallbackContent = false;
+
+  function parseCSV(text){
+    if(text.charCodeAt(0) === 0xFEFF) text = text.slice(1); // strip BOM
+    var rows = [];
+    var row = [];
+    var field = '';
+    var inQuotes = false;
+    var i = 0;
+    var len = text.length;
+    while(i < len){
+      var c = text.charAt(i);
+      if(inQuotes){
+        if(c === '"'){
+          if(text.charAt(i+1) === '"'){ field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        }
+        field += c; i++; continue;
+      }
+      if(c === '"'){ inQuotes = true; i++; continue; }
+      if(c === ','){ row.push(field); field=''; i++; continue; }
+      if(c === '\r'){ i++; continue; }
+      if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; i++; continue; }
+      field += c; i++;
+    }
+    if(field.length>0 || row.length>0){ row.push(field); rows.push(row); }
+    return rows.filter(function(r){ return !(r.length===1 && r[0].trim()===''); });
+  }
+
+  function parseRoomsFromCSV(text){
+    var rows = parseCSV(text);
+    if(rows.length < 2) throw new Error('The sheet has no data rows.');
+
+    var colIndex = {};
+    rows[0].forEach(function(h, idx){ colIndex[h.trim().toLowerCase()] = idx; });
+    var required = ['key','name','skill','story','problem','answer','timelimit','hint','solution'];
+    for(var r=0;r<required.length;r++){
+      if(!(required[r] in colIndex)) throw new Error('Missing "'+required[r]+'" column.');
+    }
+
+    var rooms = [];
+    for(var i=1;i<rows.length;i++){
+      var cells = rows[i];
+      if(cells.every(function(c){ return c.trim()===''; })) continue;
+      var get = (function(cells){ return function(name){ return (cells[colIndex[name]]||'').trim(); }; })(cells);
+
+      var answerNum = parseFloat(get('answer'));
+      var timeLimitNum = parseInt(get('timelimit'),10);
+      if(isNaN(answerNum)) throw new Error('Row '+(i+1)+': "answer" isn\'t a number.');
+      if(isNaN(timeLimitNum)) throw new Error('Row '+(i+1)+': "timeLimit" isn\'t a number.');
+
+      var toHtml = function(v){ return sanitizeRichText(v).replace(/\n/g,'<br>'); };
+      rooms.push({
+        key: get('key').toLowerCase() || 'door',
+        name: toHtml(get('name')),
+        skill: toHtml(get('skill')),
+        story: toHtml(get('story')),
+        problem: toHtml(get('problem')),
+        answer: answerNum,
+        timeLimit: timeLimitNum,
+        hint: toHtml(get('hint')),
+        solution: toHtml(get('solution'))
+      });
+    }
+    if(rooms.length===0) throw new Error('No usable room rows found.');
+    return rooms;
+  }
+
+  async function loadRooms(){
+    if(!SHEET_URL){ return DEFAULT_ROOMS; }
+    try{
+      var response = await fetch(SHEET_URL, { cache:'no-store' });
+      if(!response.ok) throw new Error('Sheet request failed (status '+response.status+').');
+      var csv = await response.text();
+      return parseRoomsFromCSV(csv);
+    }catch(err){
+      console.warn('Falling back to the built-in adventure — could not load the sheet:', err);
+      usingFallbackContent = true;
+      return DEFAULT_ROOMS;
+    }
+  }
+
+  function showLoadingScreen(){
+    app.innerHTML = '<div class="panel center-panel">'+ICONS.tower+'<h2>Opening the tower gates&hellip;</h2><p>Loading your adventure.</p></div>';
+  }
+
+  /* ============ STATE ============ */
+  var STORAGE_KEY = 'wizardTowerEscapeV1';
+  var ROOMS = null;
+  var state = null;
+  var tickHandle = null;
+
+  function defaultState(){
+    return {
+      stage:'start',
+      teamName:'',
+      roomIndex:0,
+      furthest:0,
+      reviewMode:false,
+      gameStartMs:null,
+      roomStartMs:null,
+      hintShown:false,
+      wrongCount:0,
+      solved:ROOMS.map(function(){ return false; }),
+      roomTimesMs:ROOMS.map(function(){ return null; })
+    };
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      if(!parsed || typeof parsed !== 'object' || !parsed.stage) return defaultState();
+      if(!Array.isArray(parsed.solved) || parsed.solved.length!==ROOMS.length) return defaultState();
+      if(!Array.isArray(parsed.roomTimesMs) || parsed.roomTimesMs.length!==ROOMS.length) return defaultState();
+      if(typeof parsed.furthest !== 'number') parsed.furthest = parsed.roomIndex||0;
+      if(typeof parsed.reviewMode !== 'boolean') parsed.reviewMode = false;
+      return parsed;
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ /* ignore */ }
+  }
+
+  /* ============ HELPERS ============ */
+  function formatTime(ms){
+    if(ms < 0) ms = 0;
+    var totalSec = Math.floor(ms/1000);
+    var m = Math.floor(totalSec/60);
+    var s = totalSec % 60;
+    return m + ':' + (s<10?'0':'') + s;
+  }
+
+  function escapeAttr(str){
+    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+
+  // Escapes everything (so a stray "<" or "&" in ordinary text can't break the
+  // page or inject markup), then deliberately un-escapes a small, safe list of
+  // typographic entities and inline formatting tags, so sheet authors can type
+  // things like &rdquo; or <b>bold</b> the same way they'd work in plain HTML.
+  var RICH_TEXT_ENTITIES = ['amp','lt','gt','quot','ldquo','rdquo','lsquo','rsquo',
+    'mdash','ndash','hellip','times','divide','minus','plusmn','deg',
+    'frac12','frac14','frac34','nbsp'];
+  var RICH_TEXT_TAGS = ['b','strong','i','em','u'];
+
+  function sanitizeRichText(str){
+    var text = escapeHtml(str);
+
+    var entityPattern = new RegExp('&amp;((?:'+RICH_TEXT_ENTITIES.join('|')+')|#\\d+|#x[0-9a-fA-F]+);','g');
+    text = text.replace(entityPattern, '&$1;');
+
+    RICH_TEXT_TAGS.forEach(function(tag){
+      text = text
+        .replace(new RegExp('&lt;'+tag+'&gt;','gi'), '<'+tag+'>')
+        .replace(new RegExp('&lt;/'+tag+'&gt;','gi'), '</'+tag+'>');
+    });
+    text = text.replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+
+    return text;
+  }
+
+  function roomIcon(room){
+    return ICONS[room.key] || ICONS.door;
+  }
+
+  var app = document.getElementById('app');
+
+  /* ============ STARFIELD ============ */
+  (function buildStars(){
+    var layer = document.getElementById('stars');
+    var frag = document.createDocumentFragment();
+    for(var i=0;i<50;i++){
+      var s = document.createElement('i');
+      s.style.left = (Math.random()*100)+'%';
+      s.style.top = (Math.random()*100)+'%';
+      s.style.opacity = (0.3 + Math.random()*0.7).toFixed(2);
+      frag.appendChild(s);
+    }
+    layer.appendChild(frag);
+  })();
+
+  /* ============ RENDER: TRAIL ============ */
+  function renderTrail(){
+    var html = '<div class="trail">';
+    ROOMS.forEach(function(room, i){
+      var cls = 'node';
+      if(state.solved[i]) cls += ' done';
+      if(i === state.roomIndex && state.stage==='play') cls += ' current';
+      if(i <= state.furthest) cls += ' reachable';
+      html += '<div class="'+cls+'" data-idx="'+i+'"><div class="dot">'+roomIcon(room)+'</div></div>';
+      if(i < ROOMS.length-1) html += '<div class="link"></div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderClock(){
+    var elapsed = state.gameStartMs ? (Date.now() - state.gameStartMs) : 0;
+    return '<div class="clock">Time elapsed: <b>'+formatTime(elapsed)+'</b></div>';
+  }
+
+  function renderTopbar(){
+    return '<div class="topbar">'+
+      '<div class="brand">'+ICONS.tower+'<div class="titles"><h1>Escape the Wizard&rsquo;s Tower</h1><p>A math adventure for young spellcasters</p></div></div>'+
+      (state.stage==='play' || state.stage==='finish' ? renderClock() : '')+
+    '</div>';
+  }
+
+  /* ============ RENDER: START ============ */
+  function renderStart(){
+    var notice = usingFallbackContent
+      ? '<div class="notice">Couldn&rsquo;t load the spreadsheet content, so this is the built-in adventure instead. Double-check the sheet is published via <b>File &gt; Share &gt; Publish to web</b> (not just link-sharing) and that the URL is correct. <button id="dismissNotice" type="button">Dismiss</button></div>'
+      : '';
+    app.innerHTML =
+      renderTopbar() +
+      notice +
+      '<div class="panel center-panel">'+
+        ICONS.tower+
+        '<h2>Six doors. Six riddles. One dragon&rsquo;s hoard.</h2>'+
+        '<p>Somewhere at the top of an ancient tower, a dragon guards a hoard of enchanted treasure. Six magical doors stand between you and the vault &mdash; and only clever calculations will open them. Read each doorkeeper&rsquo;s riddle carefully, solve the sum, and type your answer to unlock the next chamber. Each door gives you a little time to think &mdash; work fast, but work together!</p>'+
+        '<div class="team-input"><input id="teamNameInput" type="text" maxlength="30" placeholder="Team name (optional)" value="'+escapeAttr(state.teamName||'')+'" /></div>'+
+        '<button class="btn" id="beginBtn">Begin the Climb</button>'+
+      '</div>';
+
+    if(usingFallbackContent){
+      var dismissBtn = document.getElementById('dismissNotice');
+      if(dismissBtn) dismissBtn.addEventListener('click', function(){
+        usingFallbackContent = false;
+        renderStart();
+      });
+    }
+
+    document.getElementById('beginBtn').addEventListener('click', function(){
+      var input = document.getElementById('teamNameInput');
+      state.teamName = input.value.trim().slice(0,30);
+      state.stage='play';
+      state.roomIndex=0;
+      state.furthest=0;
+      state.reviewMode=false;
+      state.gameStartMs = Date.now();
+      state.roomStartMs = Date.now();
+      state.hintShown=false;
+      state.wrongCount=0;
+      state.solved=ROOMS.map(function(){ return false; });
+      state.roomTimesMs=ROOMS.map(function(){ return null; });
+      saveState();
+      render();
+    });
+  }
+
+  /* ============ RENDER: PLAY ============ */
+  var ringCircumference = 2*Math.PI*23;
+
+  function renderPlay(){
+    var room = ROOMS[state.roomIndex];
+    var solvedAlready = state.solved[state.roomIndex];
+    var showForm = !solvedAlready || state.reviewMode;
+
+    var prevNav = state.roomIndex>0
+      ? '<div class="nav-row"><button class="btn secondary small" id="prevBtn" type="button">&larr; Previous chamber</button></div>'
+      : '';
+
+    var bodyHtml;
+    if(showForm){
+      bodyHtml =
+          '<div class="timer-row">'+
+            '<div class="ring-wrap"><svg viewBox="0 0 52 52">'+
+              '<circle class="ring-track" cx="26" cy="26" r="23"></circle>'+
+              '<circle class="ring-bar" id="ringBar" cx="26" cy="26" r="23" stroke-dasharray="'+ringCircumference.toFixed(1)+'" stroke-dashoffset="0"></circle>'+
+            '</svg></div>'+
+            '<div class="timer-text" id="timerText"><span class="label">Time for this chamber</span>--:--</div>'+
+          '</div>'+
+          '<div class="answer-row">'+
+            '<input class="lock-input" id="answerInput" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="?" aria-label="Enter the unlock code" />'+
+            '<button class="btn" id="submitBtn" type="button">Unlock</button>'+
+          '</div>'+
+          '<div class="feedback" id="feedback" aria-live="polite"></div>'+
+          '<button class="hint-toggle" id="hintToggle" type="button">Need a clue?</button>'+
+          '<div class="hint-text" id="hintText">'+room.hint+'</div>';
+    } else {
+      var proceedLabel = state.roomIndex===ROOMS.length-1 ? 'See your results' : 'Continue to the next chamber';
+      bodyHtml =
+          '<div class="success-box show"><span class="label">Solved &middot; '+formatTime(state.roomTimesMs[state.roomIndex]||0)+'</span><p>'+room.solution+'</p></div>'+
+          '<div class="nav-row bottom">'+
+            '<button class="btn secondary small" id="tryAgainBtn" type="button">Try it again</button>'+
+            '<button class="btn" id="proceedBtn" type="button">'+proceedLabel+'</button>'+
+          '</div>';
+    }
+
+    app.innerHTML =
+      renderTopbar() +
+      renderTrail() +
+      '<div class="panel room-card">'+
+        '<div class="illus">'+roomIcon(room)+'</div>'+
+        '<div class="room-body">'+
+          '<h2 class="room-title">'+room.name+'</h2>'+
+          '<div class="room-meta">Chamber '+(state.roomIndex+1)+' of '+ROOMS.length+' &middot; '+room.skill+'</div>'+
+          prevNav+
+          '<p class="story">'+room.story+'</p>'+
+          '<div class="problem">'+room.problem+'</div>'+
+          bodyHtml+
+        '</div>'+
+      '</div>'+
+      '<div class="foot-links" id="footLinks"><button id="restartLink" type="button">Start over</button></div>';
+
+    // trail navigation (click a previously-reached chamber to jump to it)
+    var trailEl = document.querySelector('.trail');
+    if(trailEl){
+      trailEl.addEventListener('click', function(e){
+        var nodeEl = e.target.closest('.node.reachable');
+        if(!nodeEl) return;
+        var idx = parseInt(nodeEl.getAttribute('data-idx'),10);
+        if(!isNaN(idx)) goToRoom(idx);
+      });
+    }
+
+    var prevBtn = document.getElementById('prevBtn');
+    if(prevBtn) prevBtn.addEventListener('click', function(){ goToRoom(state.roomIndex-1); });
+
+    if(showForm){
+      document.getElementById('submitBtn').addEventListener('click', submitAnswer);
+      document.getElementById('answerInput').addEventListener('keydown', function(e){
+        if(e.key==='Enter') submitAnswer();
+      });
+      document.getElementById('hintToggle').addEventListener('click', function(){
+        var el = document.getElementById('hintText');
+        el.classList.toggle('show');
+        state.hintShown = true;
+        document.getElementById('hintToggle').classList.remove('pulse');
+      });
+      document.getElementById('answerInput').focus();
+    } else {
+      document.getElementById('tryAgainBtn').addEventListener('click', function(){
+        state.reviewMode = true;
+        state.roomStartMs = Date.now();
+        state.wrongCount = 0;
+        state.hintShown = false;
+        saveState();
+        render();
+      });
+      document.getElementById('proceedBtn').addEventListener('click', proceedForward);
+    }
+
+    wireFootLinks();
+    ensureTicking();
+    updateTimerDisplay();
+  }
+
+  function wireFootLinks(){
+    var restartBtn = document.getElementById('restartLink');
+    if(!restartBtn) return;
+    restartBtn.addEventListener('click', function(){
+      var fl = document.getElementById('footLinks');
+      fl.innerHTML = '<span class="confirm-row">Restart the whole adventure? '+
+        '<button class="btn small" id="confirmYes" type="button">Yes, start over</button>'+
+        '<button class="btn secondary small" id="confirmNo" type="button">Cancel</button></span>';
+      document.getElementById('confirmYes').addEventListener('click', restart);
+      document.getElementById('confirmNo').addEventListener('click', function(){
+        fl.innerHTML = '<button id="restartLink" type="button">Start over</button>';
+        wireFootLinks();
+      });
+    });
+  }
+
+  function submitAnswer(){
+    var room = ROOMS[state.roomIndex];
+    var input = document.getElementById('answerInput');
+    var val = parseFloat((input.value||'').trim());
+    var feedback = document.getElementById('feedback');
+
+    if(isNaN(val)){
+      feedback.textContent = 'Type a number to try the lock.';
+      feedback.className = 'feedback wrong';
+      return;
+    }
+
+    if(Math.round(val*100) === Math.round(room.answer*100)){
+      var elapsedRoom = Date.now() - state.roomStartMs;
+      state.roomTimesMs[state.roomIndex] = elapsedRoom;
+      state.solved[state.roomIndex] = true;
+      state.reviewMode = false;
+      saveState();
+      render();
+    } else {
+      state.wrongCount++;
+      feedback.innerHTML = 'That&rsquo;s not quite right &mdash; give it another try.';
+      feedback.className = 'feedback wrong';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      if(state.wrongCount >= 2 && !state.hintShown){
+        var toggle = document.getElementById('hintToggle');
+        if(toggle) toggle.classList.add('pulse');
+      }
+      saveState();
+    }
+  }
+
+  function goNextRoom(){
+    if(state.roomIndex < ROOMS.length-1){
+      state.roomIndex++;
+      if(state.roomIndex > state.furthest) state.furthest = state.roomIndex;
+      state.roomStartMs = Date.now();
+      state.hintShown=false;
+      state.wrongCount=0;
+      state.reviewMode=false;
+      saveState();
+      render();
+    } else {
+      stopTicking();
+      state.stage='finish';
+      saveState();
+      render();
+    }
+  }
+
+  // Move forward one chamber: a real advance if we're at the frontier
+  // (may finish the game), otherwise just browsing already-unlocked ground.
+  function proceedForward(){
+    if(state.roomIndex === state.furthest){
+      goNextRoom();
+    } else {
+      goToRoom(state.roomIndex+1);
+    }
+  }
+
+  // Jump to any chamber already reached (0..furthest). Used by the
+  // Previous-chamber button and by clicking a trail marker.
+  function goToRoom(idx){
+    if(idx < 0 || idx > state.furthest) return;
+    state.roomIndex = idx;
+    state.reviewMode = false;
+    saveState();
+    render();
+  }
+
+  function ensureTicking(){
+    if(tickHandle) return;
+    tickHandle = setInterval(function(){
+      var clockEl = document.querySelector('.clock b');
+      if(clockEl && state.gameStartMs) clockEl.textContent = formatTime(Date.now()-state.gameStartMs);
+      updateTimerDisplay();
+    }, 1000);
+  }
+  function stopTicking(){
+    if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
+  }
+
+  function updateTimerDisplay(){
+    var room = ROOMS[state.roomIndex];
+    var elapsed = Date.now() - state.roomStartMs;
+    var remaining = room.timeLimit*1000 - elapsed;
+    var timerText = document.getElementById('timerText');
+    var ringBar = document.getElementById('ringBar');
+    if(!timerText || !ringBar) return;
+
+    if(remaining >= 0){
+      var frac = remaining/(room.timeLimit*1000);
+      ringBar.setAttribute('stroke-dashoffset', (ringCircumference*(1-frac)).toFixed(1));
+      ringBar.classList.remove('over');
+      timerText.classList.remove('over');
+      timerText.innerHTML = '<span class="label">Time for this chamber</span>'+formatTime(remaining);
+    } else {
+      ringBar.setAttribute('stroke-dashoffset', '0');
+      ringBar.classList.add('over');
+      timerText.classList.add('over');
+      timerText.innerHTML = '<span class="label">Overtime &mdash; keep going!</span>+'+formatTime(-remaining);
+      var toggle = document.getElementById('hintToggle');
+      if(toggle && !state.hintShown) toggle.classList.add('pulse');
+    }
+  }
+
+  /* ============ RENDER: FINISH ============ */
+  function renderFinish(){
+    stopTicking();
+    var totalMs = state.roomTimesMs.reduce(function(a,b){return a+(b||0);},0);
+    var recapHtml = '';
+    ROOMS.forEach(function(room,i){
+      recapHtml += '<details><summary>'+room.name+' &mdash; '+formatTime(state.roomTimesMs[i]||0)+'</summary>'+
+        '<p>'+room.problem+'</p><p>'+room.solution+'</p></details>';
+    });
+
+    app.innerHTML =
+      renderTopbar() +
+      '<div class="panel center-panel">'+
+        ICONS.chest+
+        '<h2>You escaped the tower! &#127881;</h2>'+
+        '<p>'+(state.teamName ? '<b>'+escapeAttr(state.teamName)+'</b> has ' : 'You have ')+'freed the dragon&rsquo;s hoard and solved every chamber. Here&rsquo;s how the adventure went:</p>'+
+        '<div class="stat-row">'+
+          '<div class="stat"><b>'+formatTime(totalMs)+'</b><span>Total solving time</span></div>'+
+          '<div class="stat"><b>'+ROOMS.length+'</b><span>Chambers unlocked</span></div>'+
+        '</div>'+
+        '<div class="recap">'+recapHtml+'</div>'+
+        '<div style="margin-top:22px;"><button class="btn" id="againBtn">Play again</button></div>'+
+      '</div>';
+
+    document.getElementById('againBtn').addEventListener('click', restart);
+  }
+
+  function restart(){
+    stopTicking();
+    state = defaultState();
+    saveState();
+    render();
+  }
+
+  /* ============ MAIN RENDER SWITCH ============ */
+  function render(){
+    if(state.stage==='play') renderPlay();
+    else if(state.stage==='finish') renderFinish();
+    else renderStart();
+  }
+
+  /* ============ INIT ============ */
+  async function init(){
+    showLoadingScreen();
+    ROOMS = await loadRooms();
+    state = loadState();
+    if(state.stage==='play' && (!ROOMS[state.roomIndex] || state.solved.length !== ROOMS.length)){
+      state = defaultState();
+    }
+    render();
+  }
+  init();
+
+})();
+</script>
+</body>
+</html>
