@@ -1,0 +1,16 @@
+---
+layout: default
+---
+
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  
+  <h2>Subfolders</h2>
+  <ul>
+    {{ range .Sections }}
+      <li>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}
