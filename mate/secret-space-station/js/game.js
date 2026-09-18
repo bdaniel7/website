@@ -75,7 +75,7 @@ const stages = [
       "The alarm has sounded 3 times and the station has 200 rooms. These facts are not needed.",
       "What is the final security code?"
     ],
-    answer:"55",
+    answer:"53.2",
     hint:"Do 36 ÷ 4 first, then + 7. After that calculate 20% of the result, then add 50.",
     redHerring:"3 alarms and 200 rooms are irrelevant."
   },
